@@ -35,13 +35,19 @@ const transactions = [
     ]
 
 const Transaction = {
+    all : transactions,
+    add(transaction){
+        Transaction.all.push(transaction)
+
+        App.reload()
+    },
     incomes() {
         let income = 0;
         //pegar todas as transações
         //para cada transaçao,
         // se ela for maior que zero
         //somar a uma variavel e retornar a variavel
-        transactions.forEach(transaction => {
+        Transaction.all.forEach(transaction => {
             if(transaction.amount > 0) {
                 income += transaction.amount;
             }
@@ -50,7 +56,7 @@ const Transaction = {
     },
     expenses() {
         let expense = 0;
-        transactions.forEach(transaction => {
+        Transaction.all.forEach(transaction => {
             if(transaction.amount < 0) {
                 expense += transaction.amount;
             }
@@ -71,6 +77,7 @@ const DOM = {
         tr.innerHTML = DOM.innerHTMLTransaction(transaction)
         DOM.transactionsContainer.appendChild(tr)
     },
+
     innerHTMLTransaction(transaction) {
         const CSSclass = transaction.amount > 0 ? "income" : "expense" 
 
@@ -86,6 +93,7 @@ const DOM = {
         `
         return html
     },
+
     updateBalance() {
         document
             .getElementById('incomeDisplay')
@@ -96,6 +104,10 @@ const DOM = {
         document
             .getElementById('totalDisplay')
             .innerHTML = Utils.formatCurrency(Transaction.total())
+    },
+
+    clearTransactions() {
+        
     }
 }
 
@@ -117,8 +129,24 @@ const Utils = {
     }
 }
 
- transactions.forEach(function(transaction){
-     DOM.addTransaction(transaction)
- })
+const App = {
+    init() {        
+         Transaction.all.forEach(transaction => {
+             DOM.addTransaction(transaction)
+         })
+        
+         DOM.updateBalance()
+    },
+    reload() {
+        App.init()
+    },
+}
 
- DOM.updateBalance()
+App.init()
+
+ Transaction.add({
+     id: 39,
+     description: 'Alo',
+     amount: 200,
+     date: '21/01/2020'
+ })
