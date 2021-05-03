@@ -9,25 +9,21 @@ const modal = {
 
 const transactions = [
     {
-        id: 1,
         description: 'Luz',
         amount: -50000,
         date: '23/01/2021'
     },
     {
-        id: 2,
         description: 'Website',
         amount: 500000,
         date: '23/01/2021'
     }, 
     {
-        id: 3,
         description: 'Internet',
         amount: -20000,
         date: '23/01/2021'
     }, 
     {
-        id: 4,
         description: 'App',
         amount: 20100,
         date: '23/01/2021'
@@ -41,6 +37,13 @@ const Transaction = {
 
         App.reload()
     },
+
+    remove(index) {
+        Transaction.all.splice(index, 1)
+
+        App.reload()
+    },
+
     incomes() {
         let income = 0;
         //pegar todas as transações
@@ -107,6 +110,7 @@ const DOM = {
     },
 
     clearTransactions() {
+        DOM.transactionsContainer.innerHTML = ""
         
     }
 }
@@ -138,15 +142,12 @@ const App = {
          DOM.updateBalance()
     },
     reload() {
+        DOM.clearTransactions()
         App.init()
     },
 }
 
 App.init()
 
- Transaction.add({
-     id: 39,
-     description: 'Alo',
-     amount: 200,
-     date: '21/01/2020'
- })
+Transaction.remove(0)
+
