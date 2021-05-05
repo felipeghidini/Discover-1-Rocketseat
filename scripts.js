@@ -116,6 +116,17 @@ const DOM = {
 
 
 const Utils = {
+    formatAmount(value) {
+        value = Number(value) * 100
+
+        return value        
+    },
+
+    formateDate(date) {
+        const splittedDate = date.split("-")
+        return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
+    },
+
     formatCurrency(value) {
         const signal = Number(value) < 0 ? "-" : ""
 
@@ -154,17 +165,32 @@ const Form = {
                 throw new Error("Por favor, preencha todos os campos")
         }
     },
+
+        formatValues(){
+            let { description, amount, date } = Form.getValues()
+            
+            amount = Utils.formatAmount(amount)
+
+            date = Utils.formateDate(date)
+            console.log(date)
+        },
+
     submit(event) {
         event.preventDefault()
 
-        //verificar se todas as informações foram preenchidas
-        Form.validateFields()
-        // formatar os dados para salvar
-      
-        // salvar
-        // apagar os dados
-        // modal fechar
-        // atualizar aplicação
+        try {
+            //verificar se todas as informações foram preenchidas
+           // Form.validateFields()
+            // formatar os dados para salvar
+            Form.formatValues
+            // salvar
+            // apagar os dados
+            // modal fechar
+            // atualizar aplicação
+        } catch (error) {
+            alert(error.message);
+        }
+
         
     }
 }
