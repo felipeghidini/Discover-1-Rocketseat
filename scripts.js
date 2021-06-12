@@ -122,7 +122,7 @@ const Utils = {
         return value        
     },
 
-    formateDate(date) {
+    formatDate(date) {
         const splittedDate = date.split("-")
         return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
     },
@@ -158,7 +158,7 @@ const Form = {
 
     validateFields(){
         const { description, amount, date } = Form.getValues()
-
+        
         if (description.trim() === "" ||
             amount.trim() === "" ||
             date.trim === "") {
@@ -166,13 +166,24 @@ const Form = {
         }
     },
 
-        formatValues(){
-            let { description, amount, date } = Form.getValues()
+    formatValues(){
+        let { description, amount, date } = Form.getValues()
             
-            amount = Utils.formatAmount(amount)
+        amount = Utils.formatAmount(amount)
 
-            date = Utils.formateDate(date)
-            console.log(date)
+        date = Utils.formatDate(date)
+
+        return {
+            description,
+            amount,
+            date
+          }
+        },
+
+    clearFields() {
+        Form.description.value = ""
+        Form.amount.value = ""
+        Form.date.value = ""
         },
 
     submit(event) {
@@ -180,13 +191,15 @@ const Form = {
 
         try {
             //verificar se todas as informações foram preenchidas
-           // Form.validateFields()
+            Form.validateFields()
             // formatar os dados para salvar
-            Form.formatValues
+            const transaction = Form.formatValues()
             // salvar
+            Transaction.add(transaction)
             // apagar os dados
+            Form.clearFields()
             // modal fechar
-            // atualizar aplicação
+            modal.close()
         } catch (error) {
             alert(error.message);
         }
